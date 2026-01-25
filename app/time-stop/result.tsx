@@ -3,19 +3,39 @@ import Button from '@/components/Button'
 import RankingList from '@/components/RankingList'
 import { COLORS } from '@/constants/colors'
 import { useAdContext } from '@/src/contexts/AdContext'
+import { useSettings } from '@/src/contexts/SettingsContext'
 import { Player } from '@/src/types/game'
 import { generateShareText, rankPlayers } from '@/src/utils/calculateScore'
+import { successHaptic } from '@/src/utils/haptics'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo } from 'react'
 import { Alert, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
+import Animated, {
+  FadeInDown,
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function TimeStopResultScreen() {
   const router = useRouter()
   const params = useLocalSearchParams<{ players: string; targetTime: string }>()
+  const { settings } = useSettings()
 
   const players: Player[] = params.players ? JSON.parse(params.players) : []
   const targetTime = params.targetTime ? parseFloat(params.targetTime) : 3.0
+
+  // 우승자 섹션 펄스 애니메이션
+  const winnerScale = useSharedValue(1)
+
+  const winnerAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: winnerScale.value }],
+  }))
 
   const {
     gameCount,
@@ -25,6 +45,22 @@ export default function TimeStopResultScreen() {
     showInterstitialAd,
     preloadInterstitialAd,
   } = useAdContext()
+
+  // 화면 진입 시 햅틱 + 애니메이션
+  useEffect(() => {
+    successHaptic(settings.hapticEnabled)
+
+    // 우승자 섹션 펄스 애니메이션
+    winnerScale.value = withSequence(
+      withSpring(1.05, { damping: 3 }),
+      withSpring(1, { damping: 5 }),
+      withRepeat(
+        withSequence(withTiming(1.02, { duration: 1000 }), withTiming(1, { duration: 1000 })),
+        -1,
+        true,
+      ),
+    )
+  }, [settings.hapticEnabled, winnerScale])
 
   // 다음 게임에서 광고가 필요한지 미리 확인하고 로드
   useEffect(() => {
@@ -105,24 +141,26 @@ export default function TimeStopResultScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* 헤더 */}
-        <View style={styles.header}>
+        <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.header}>
           <Text style={styles.trophy}>🏆</Text>
           <Text style={styles.title}>게임 결과</Text>
           <Text style={styles.targetTime}>목표 시간: {targetTime.toFixed(1)}초</Text>
-        </View>
+        </Animated.View>
 
         {/* 우승자 하이라이트 */}
-        <View style={styles.winnerSection}>
-          <Text style={styles.winnerLabel}>🎉 우승 🎉</Text>
-          <Text style={styles.winnerName}>{winner.name}</Text>
-          <Text style={styles.winnerScore}>오차 {winner.score?.toFixed(2)}초</Text>
-        </View>
+        <Animated.View entering={FadeInUp.delay(300).springify()}>
+          <Animated.View style={[styles.winnerSection, winnerAnimatedStyle]}>
+            <Text style={styles.winnerLabel}>🎉 우승 🎉</Text>
+            <Text style={styles.winnerName}>{winner.name}</Text>
+            <Text style={styles.winnerScore}>오차 {winner.score?.toFixed(2)}초</Text>
+          </Animated.View>
+        </Animated.View>
 
         {/* 전체 순위 */}
-        <View style={styles.rankingSection}>
+        <Animated.View entering={FadeInUp.delay(500).duration(400)} style={styles.rankingSection}>
           <Text style={styles.sectionTitle}>전체 순위</Text>
           <RankingList players={rankedPlayers} targetTime={targetTime} gameMode="timeStop" />
-        </View>
+        </Animated.View>
       </ScrollView>
 
       {/* 하단 버튼 */}
