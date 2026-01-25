@@ -87,7 +87,9 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: COLORS.background },
-          gestureEnabled: true, // iOS 스와이프 제스처 활성화
+          gestureEnabled: true,
+          fullScreenGestureEnabled: true, // iOS 전체 화면 스와이프 제스처
+          animation: 'slide_from_right', // 스와이프 애니메이션
         }}
       >
         <Stack.Screen name="index" />
