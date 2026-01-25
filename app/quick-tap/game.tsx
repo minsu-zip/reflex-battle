@@ -5,7 +5,8 @@ import { CONFIG } from '@/constants/config'
 import { Player } from '@/src/types/game'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type GamePhase = 'waiting' | 'ready' | 'go' | 'tooEarly' | 'result'
 
@@ -35,6 +36,14 @@ export default function QuickTapGameScreen() {
       }
     }
   }, [])
+
+  // 뒤로가기 (세팅 화면으로)
+  const handleBack = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    router.back()
+  }
 
   // 게임 시작 (대기 → 준비)
   const startRound = useCallback(() => {
@@ -135,7 +144,16 @@ export default function QuickTapGameScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* 상단 정보 */}
+      {/* 상단 헤더 */}
+      <View style={styles.topHeader}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>← 뒤로</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>⚡ QUICK TAP</Text>
+        <View style={styles.headerSpacer} />
+      </View>
+
+      {/* 플레이어 정보 */}
       <View style={styles.header}>
         <Text style={styles.playerTurn}>{currentPlayer.name}의 차례</Text>
         <View style={styles.progressDots}>
@@ -185,6 +203,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  topHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.surface,
+  },
+  backButton: {
+    padding: 8,
+  },
+  backButtonText: {
+    color: COLORS.primary,
+    fontSize: 16,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text,
+  },
+  headerSpacer: {
+    width: 60,
   },
   header: {
     alignItems: 'center',

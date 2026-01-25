@@ -6,7 +6,8 @@ import { useTimer } from '@/hooks/useTimer'
 import { Player } from '@/src/types/game'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type GamePhase = 'ready' | 'playing' | 'stopped'
 
@@ -23,6 +24,12 @@ export default function TimeStopGameScreen() {
   const [stoppedTime, setStoppedTime] = useState<number | null>(null)
 
   const { time, start, stop, reset } = useTimer()
+
+  // 뒤로가기 (세팅 화면으로)
+  const handleBack = () => {
+    reset()
+    router.back()
+  }
 
   const currentPlayer = players[currentPlayerIndex]
   const remainingPlayers = players.length - currentPlayerIndex
@@ -102,6 +109,15 @@ export default function TimeStopGameScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* 상단 헤더 */}
+      <View style={styles.topHeader}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>← 뒤로</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>🎯 TIME STOP</Text>
+        <View style={styles.headerSpacer} />
+      </View>
+
       <View style={styles.content}>
         {/* 현재 플레이어 정보 */}
         <View style={styles.header}>
@@ -176,6 +192,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  topHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.surface,
+  },
+  backButton: {
+    padding: 8,
+  },
+  backButtonText: {
+    color: COLORS.primary,
+    fontSize: 16,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text,
+  },
+  headerSpacer: {
+    width: 60,
   },
   content: {
     flex: 1,
