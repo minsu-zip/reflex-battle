@@ -1,5 +1,7 @@
 import { COLORS } from '@/constants/colors'
-import React from 'react'
+import { useSettings } from '@/src/contexts/SettingsContext'
+import { lightHaptic, successHaptic, warningHaptic } from '@/src/utils/haptics'
+import React, { useCallback } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 type TapAreaState = 'waiting' | 'ready' | 'go' | 'tooEarly' | 'result'
@@ -12,6 +14,25 @@ interface TapAreaProps {
 }
 
 export default function TapArea({ state, onTap, reactionTime, disabled = false }: TapAreaProps) {
+  const { settings } = useSettings()
+
+  const handleTap = useCallback(() => {
+    switch (state) {
+      case 'waiting':
+        lightHaptic(settings.hapticEnabled)
+        break
+      case 'ready':
+        warningHaptic(settings.hapticEnabled)
+        break
+      case 'go':
+        successHaptic(settings.hapticEnabled)
+        break
+      case 'tooEarly':
+        lightHaptic(settings.hapticEnabled)
+        break
+    }
+    onTap()
+  }, [state, onTap, settings.hapticEnabled])
   const getBackgroundColor = () => {
     switch (state) {
       case 'waiting':
@@ -54,7 +75,7 @@ export default function TapArea({ state, onTap, reactionTime, disabled = false }
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: getBackgroundColor() }]}
-      onPress={onTap}
+      onPress={handleTap}
       disabled={disabled}
       activeOpacity={0.9}
     >

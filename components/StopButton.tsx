@@ -1,5 +1,7 @@
 import { COLORS } from '@/constants/colors'
-import React from 'react'
+import { useSettings } from '@/src/contexts/SettingsContext'
+import { heavyHaptic, mediumHaptic } from '@/src/utils/haptics'
+import React, { useCallback } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 interface StopButtonProps {
@@ -9,12 +11,22 @@ interface StopButtonProps {
 }
 
 export default function StopButton({ onPress, disabled = false, label = 'STOP' }: StopButtonProps) {
+  const { settings } = useSettings()
   const isStart = label === 'START'
+
+  const handlePress = useCallback(() => {
+    if (isStart) {
+      mediumHaptic(settings.hapticEnabled)
+    } else {
+      heavyHaptic(settings.hapticEnabled)
+    }
+    onPress()
+  }, [isStart, onPress, settings.hapticEnabled])
 
   return (
     <TouchableOpacity
       style={[styles.button, isStart && styles.startButton, disabled && styles.disabled]}
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       activeOpacity={0.8}
     >

@@ -1,5 +1,7 @@
 import { COLORS } from '@/constants/colors'
-import React from 'react'
+import { useSettings } from '@/src/contexts/SettingsContext'
+import { lightHaptic } from '@/src/utils/haptics'
+import React, { useCallback } from 'react'
 import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native'
 
 interface ButtonProps {
@@ -21,10 +23,17 @@ export default function Button({
   style,
   textStyle,
 }: ButtonProps) {
+  const { settings } = useSettings()
+
+  const handlePress = useCallback(() => {
+    lightHaptic(settings.hapticEnabled)
+    onPress()
+  }, [onPress, settings.hapticEnabled])
+
   return (
     <TouchableOpacity
       style={[styles.button, styles[variant], styles[size], disabled && styles.disabled, style]}
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       activeOpacity={0.8}
     >
