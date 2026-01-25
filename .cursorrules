@@ -1,0 +1,84 @@
+# Cursor Rules for Reflex Battle Project
+
+## Commit Message Generation Strategy
+
+Conventional Commits 형식을 한국어로 작성합니다.
+
+### 형식
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Commit Types
+
+- `feat`: 새로운 기능 추가
+- `fix`: 버그 수정
+- `refactor`: 코드 리팩토링
+- `style`: 코드 포맷팅, 세미콜론 누락 등
+- `perf`: 성능 개선
+- `test`: 테스트 코드 추가/수정
+- `build`: 빌드 시스템 또는 외부 의존성 변경
+- `chore`: 빌드 업무 수정, 패키지 매니저 설정 등
+- `docs`: 문서 수정
+- `design`: UI/UX 디자인 변경
+- `config`: 설정 파일 변경
+- `ci`: CI/CD 설정 변경
+- `revert`: 이전 커밋 되돌리기
+
+### Scope (선택사항)
+
+- `time-stop`, `quick-tap`: 게임 모드별
+- `ad`: 광고 관련
+- `ui`, `hook`, `util`, `config`, `layout`, `theme`: 컴포넌트/기능별
+
+### 작성 규칙
+
+**Subject:**
+- 한국어로 작성, 명령형 사용 ("추가", "수정", "개선")
+- 50자 이내, 마침표 없음
+- Breaking Changes는 `!` 표기: `feat!:`, `feat(scope)!:`
+
+**Body (선택사항):**
+- 한국어로 작성
+- "what"과 "why" 중심 (구현 방법은 생략)
+- 72자마다 줄바꿈
+
+**Footer (선택사항):**
+- 이슈 참조: `Closes #123`, `Fixes #456`, `Refs #789`
+- Breaking changes: `BREAKING CHANGE: <설명>`
+
+### 예시
+
+```
+feat(time-stop): 목표 시간 설정 기능 추가
+
+사용자가 목표 시간을 직접 입력할 수 있는 NumberStepper 컴포넌트를 추가했습니다.
+기본값은 5초이며, 1초부터 10초까지 설정 가능합니다.
+```
+
+```
+fix(quick-tap): 탭 반응 속도 측정 오류 수정
+
+색상 변경 후 첫 번째 탭이 제대로 감지되지 않던 문제를 수정했습니다.
+타이머 시작 시점과 색상 변경 시점의 동기화를 개선했습니다.
+```
+
+```
+feat!: API 응답 형식 변경
+
+기존 JSON 응답 구조를 새로운 형식으로 변경합니다.
+
+BREAKING CHANGE: API 응답의 data 필드 구조가 변경되었습니다.
+```
+
+### 자동 생성 시 고려사항
+
+1. 파일 경로 분석하여 scope 추론
+2. 변경 내용 분석하여 type 결정
+3. Breaking changes 감지 시 `!` 표기 및 footer 추가
+4. 관련 이슈/PR이 있으면 footer에 참조 추가
