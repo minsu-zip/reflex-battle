@@ -1,6 +1,7 @@
 import { COLORS } from '@/constants/colors'
 import { AD_CONFIG, AD_UNIT_IDS } from '@/src/constants/adUnitIds'
 import { AdProvider } from '@/src/contexts/AdContext'
+import { SettingsProvider } from '@/src/contexts/SettingsContext'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
@@ -82,26 +83,28 @@ export default function RootLayout() {
   }
 
   return (
-    <AdProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: COLORS.background },
-          gestureEnabled: true,
-          fullScreenGestureEnabled: true, // iOS 전체 화면 스와이프 제스처
-          animation: 'slide_from_right', // 스와이프 애니메이션
-        }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen name="time-stop/setup" />
-        <Stack.Screen name="time-stop/game" />
-        <Stack.Screen name="time-stop/result" />
-        <Stack.Screen name="quick-tap/setup" />
-        <Stack.Screen name="quick-tap/game" />
-        <Stack.Screen name="quick-tap/result" />
-      </Stack>
-      <StatusBar style="light" />
-    </AdProvider>
+    <SettingsProvider>
+      <AdProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: COLORS.background },
+            gestureEnabled: true,
+            fullScreenGestureEnabled: true, // iOS 전체 화면 스와이프 제스처
+            animation: 'slide_from_right', // 스와이프 애니메이션
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="time-stop/setup" />
+          <Stack.Screen name="time-stop/game" />
+          <Stack.Screen name="time-stop/result" />
+          <Stack.Screen name="quick-tap/setup" />
+          <Stack.Screen name="quick-tap/game" />
+          <Stack.Screen name="quick-tap/result" />
+        </Stack>
+        <StatusBar style="light" />
+      </AdProvider>
+    </SettingsProvider>
   )
 }
 
