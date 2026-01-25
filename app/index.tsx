@@ -1,12 +1,15 @@
 import AdBanner from '@/components/AdBanner'
+import ExitModal from '@/components/ExitModal'
 import { COLORS } from '@/constants/colors'
+import { useExitHandler } from '@/hooks/useExitHandler'
 import { useRouter } from 'expo-router'
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function HomeScreen() {
   const router = useRouter()
+  const { exitModalVisible, hideExitModal, exitApp } = useExitHandler()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,6 +40,11 @@ export default function HomeScreen() {
 
       {/* 하단 배너 광고 */}
       <AdBanner />
+
+      {/* Android 종료 확인 모달 */}
+      {Platform.OS === 'android' && (
+        <ExitModal visible={exitModalVisible} onCancel={hideExitModal} onExit={exitApp} />
+      )}
     </SafeAreaView>
   )
 }
