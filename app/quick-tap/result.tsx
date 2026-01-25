@@ -1,13 +1,13 @@
 import AdBanner from '@/components/AdBanner'
 import Button from '@/components/Button'
 import { COLORS } from '@/constants/colors'
-import { useInterstitialAd } from '@/hooks/useInterstitialAd'
 import { useAdContext } from '@/src/contexts/AdContext'
 import { Player } from '@/src/types/game'
 import { getRankEmoji } from '@/src/utils/calculateScore'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo } from 'react'
-import { Alert, SafeAreaView, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
+import { Alert, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 interface RankedPlayer extends Player {
   rank: number
@@ -19,13 +19,24 @@ export default function QuickTapResultScreen() {
 
   const players: Player[] = params.players ? JSON.parse(params.players) : []
 
-  const { showAd, isLoaded } = useInterstitialAd()
-  const { incrementGameCount, shouldShowInterstitial } = useAdContext()
+  const {
+    gameCount,
+    incrementGameCount,
+    shouldShowInterstitial,
+    isInterstitialLoaded,
+    showInterstitialAd,
+    preloadInterstitialAd,
+  } = useAdContext()
 
-  // 게임 완료 시 카운트 증가
+  // 다음 게임에서 광고가 필요한지 미리 확인하고 로드
   useEffect(() => {
-    incrementGameCount()
-  }, [incrementGameCount])
+    const nextCount = gameCount + 1
+    const willNeedAdNext = nextCount > 0 && nextCount % 3 === 0
+
+    if (willNeedAdNext && !isInterstitialLoaded) {
+      preloadInterstitialAd()
+    }
+  }, [gameCount, isInterstitialLoaded, preloadInterstitialAd])
 
   // 플레이어 순위 계산 (빠른 시간순)
   const rankedPlayers: RankedPlayer[] = useMemo(() => {
@@ -49,8 +60,10 @@ export default function QuickTapResultScreen() {
 
   // 다시하기 (전면 광고 포함)
   const handlePlayAgain = async () => {
-    if (shouldShowInterstitial() && isLoaded) {
-      await showAd()
+    incrementGameCount()
+
+    if (shouldShowInterstitial() && isInterstitialLoaded) {
+      await showInterstitialAd()
     }
 
     const resetPlayers = players.map((p) => ({ ...p, score: null }))
@@ -64,9 +77,12 @@ export default function QuickTapResultScreen() {
 
   // 홈으로 (전면 광고 포함)
   const handleGoHome = async () => {
-    if (shouldShowInterstitial() && isLoaded) {
-      await showAd()
+    incrementGameCount()
+
+    if (shouldShowInterstitial() && isInterstitialLoaded) {
+      await showInterstitialAd()
     }
+
     router.dismissAll()
     router.replace('/')
   }

@@ -2,7 +2,8 @@ import AdBanner from '@/components/AdBanner'
 import { COLORS } from '@/constants/colors'
 import { useRouter } from 'expo-router'
 import React from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function HomeScreen() {
   const router = useRouter()
