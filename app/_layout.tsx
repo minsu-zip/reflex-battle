@@ -3,11 +3,14 @@ import { AD_CONFIG, AD_UNIT_IDS } from '@/src/constants/adUnitIds'
 import { AdProvider } from '@/src/contexts/AdContext'
 import { SettingsProvider } from '@/src/contexts/SettingsContext'
 import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import mobileAds, { AdEventType, InterstitialAd } from 'react-native-google-mobile-ads'
 import 'react-native-reanimated'
+
+// 스플래시 화면 유지
+SplashScreen.preventAutoHideAsync()
 
 // 스플래시용 전면 광고
 const splashInterstitial = InterstitialAd.createForAdRequest(AD_UNIT_IDS.INTERSTITIAL, {
@@ -16,7 +19,6 @@ const splashInterstitial = InterstitialAd.createForAdRequest(AD_UNIT_IDS.INTERST
 
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false)
-  const [adShown, setAdShown] = useState(false)
 
   useEffect(() => {
     // AdMob 초기화
@@ -32,35 +34,44 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!AD_CONFIG.SHOW_SPLASH_INTERSTITIAL) {
+      SplashScreen.hideAsync()
       setIsReady(true)
       return
     }
 
     let timeoutId: ReturnType<typeof setTimeout>
+    let adLoaded = false
 
-    const loadListener = splashInterstitial.addAdEventListener(AdEventType.LOADED, () => {
+    const loadListener = splashInterstitial.addAdEventListener(AdEventType.LOADED, async () => {
       console.log('Splash interstitial loaded')
+      adLoaded = true
+      // 스플래시 숨기고 바로 광고 표시
+      await SplashScreen.hideAsync()
       splashInterstitial.show()
     })
 
     const closeListener = splashInterstitial.addAdEventListener(AdEventType.CLOSED, () => {
       console.log('Splash interstitial closed')
-      setAdShown(true)
       setIsReady(true)
     })
 
-    const errorListener = splashInterstitial.addAdEventListener(AdEventType.ERROR, (error) => {
-      console.error('Splash interstitial error:', error)
-      setIsReady(true) // 광고 실패해도 앱 진행
-    })
+    const errorListener = splashInterstitial.addAdEventListener(
+      AdEventType.ERROR,
+      async (error) => {
+        console.error('Splash interstitial error:', error)
+        await SplashScreen.hideAsync()
+        setIsReady(true) // 광고 실패해도 앱 진행
+      },
+    )
 
     // 광고 로드 시작
     splashInterstitial.load()
 
     // 타임아웃: 5초 후에도 광고 안 뜨면 그냥 진행
-    timeoutId = setTimeout(() => {
-      if (!adShown) {
+    timeoutId = setTimeout(async () => {
+      if (!adLoaded) {
         console.log('Ad timeout, proceeding without ad')
+        await SplashScreen.hideAsync()
         setIsReady(true)
       }
     }, 5000)
@@ -73,13 +84,9 @@ export default function RootLayout() {
     }
   }, [])
 
-  // 로딩 화면 (스플래시 대용)
+  // 스플래시가 숨겨질 때까지 아무것도 렌더링하지 않음
   if (!isReady) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    )
+    return null
   }
 
   return (
@@ -107,12 +114,3 @@ export default function RootLayout() {
     </SettingsProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.background,
-  },
-})
