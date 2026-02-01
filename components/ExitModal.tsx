@@ -1,5 +1,6 @@
 import { COLORS } from '@/constants/colors'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import NativeAdView from './NativeAdView'
 
@@ -10,6 +11,8 @@ interface ExitModalProps {
 }
 
 export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps) {
+  const { t } = useTranslation()
+
   return (
     <Modal
       visible={visible}
@@ -21,7 +24,7 @@ export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps)
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           {/* 제목 */}
-          <Text style={styles.title}>정말 나가시겠습니까?</Text>
+          <Text style={styles.title}>{t('exitModal.title')}</Text>
 
           {/* 네이티브 광고 영역 */}
           <View style={styles.adContainer}>
@@ -35,7 +38,7 @@ export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps)
               onPress={onCancel}
               activeOpacity={0.7}
             >
-              <Text style={styles.cancelButtonText}>취소</Text>
+              <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -43,7 +46,7 @@ export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps)
               onPress={onExit}
               activeOpacity={0.7}
             >
-              <Text style={styles.exitButtonText}>종료</Text>
+              <Text style={styles.exitButtonText}>{t('common.exit')}</Text>
             </TouchableOpacity>
           </View>
         </View>

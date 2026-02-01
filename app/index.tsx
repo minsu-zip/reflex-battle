@@ -4,18 +4,20 @@ import { COLORS } from '@/constants/colors'
 import { useExitHandler } from '@/hooks/useExitHandler'
 import { useRouter } from 'expo-router'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function HomeScreen() {
   const router = useRouter()
   const { exitModalVisible, hideExitModal, exitApp } = useExitHandler()
+  const { t } = useTranslation()
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>REFLEX BATTLE</Text>
-        <Text style={styles.subtitle}>친구들과 반응속도 대결!</Text>
+        <Text style={styles.title}>{t('home.title')}</Text>
+        <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -23,8 +25,8 @@ export default function HomeScreen() {
             onPress={() => router.push('/time-stop/setup')}
           >
             <Text style={styles.modeEmoji}>🎯</Text>
-            <Text style={styles.modeTitle}>TIME STOP</Text>
-            <Text style={styles.modeDescription}>목표 시간에 정확히 멈춰라!</Text>
+            <Text style={styles.modeTitle}>{t('home.timeStopTitle')}</Text>
+            <Text style={styles.modeDescription}>{t('home.timeStopDesc')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -32,8 +34,8 @@ export default function HomeScreen() {
             onPress={() => router.push('/quick-tap/setup')}
           >
             <Text style={styles.modeEmoji}>⚡</Text>
-            <Text style={styles.modeTitle}>QUICK TAP</Text>
-            <Text style={styles.modeDescription}>색이 바뀌면 최대한 빨리!</Text>
+            <Text style={styles.modeTitle}>{t('home.quickTapTitle')}</Text>
+            <Text style={styles.modeDescription}>{t('home.quickTapDesc')}</Text>
           </TouchableOpacity>
         </View>
       </View>

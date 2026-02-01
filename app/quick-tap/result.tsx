@@ -8,6 +8,7 @@ import { getRankEmoji } from '@/src/utils/calculateScore'
 import { successHaptic } from '@/src/utils/haptics'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Alert, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
 import Animated, {
   FadeInDown,
@@ -27,6 +28,7 @@ interface RankedPlayer extends Player {
 
 export default function QuickTapResultScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ players: string }>()
   const { settings } = useSettings()
 
@@ -126,18 +128,18 @@ export default function QuickTapResultScreen() {
   // 공유하기
   const handleShare = async () => {
     try {
-      let text = `🎮 Reflex Battle 결과\n⚡ QUICK TAP\n\n`
+      let text = `🎮 ${t('share.result')}\n⚡ QUICK TAP\n\n`
 
       rankedPlayers.forEach((player) => {
         const emoji = getRankEmoji(player.rank)
-        text += `${emoji} ${player.name}: ${player.score?.toFixed(3)}초\n`
+        text += `${emoji} ${player.name}: ${player.score?.toFixed(3)}${t('common.seconds')}\n`
       })
 
-      text += '\n🔥 나도 도전하기!\n#ReflexBattle #반응속도'
+      text += `\n🔥 ${t('share.challenge')}\n#ReflexBattle`
 
       await Share.share({ message: text })
     } catch (error) {
-      Alert.alert('공유 실패', '공유하는 중 오류가 발생했습니다.')
+      Alert.alert(t('common.shareFailed'), t('common.shareError'))
     }
   }
 
@@ -169,19 +171,19 @@ export default function QuickTapResultScreen() {
 
   // 반응 시간 평가
   const getReactionLabel = (time: number | null) => {
-    if (time === null) return '측정 안됨'
-    if (time < 0.2) return '⚡ 번개'
-    if (time < 0.25) return '🔥 매우 빠름'
-    if (time < 0.3) return '👍 빠름'
-    if (time < 0.4) return '😊 평균'
-    return '🐢 느림'
+    if (time === null) return t('feedback.notMeasured')
+    if (time < 0.2) return `⚡ ${t('feedback.lightning')}`
+    if (time < 0.25) return `🔥 ${t('feedback.veryFast')}`
+    if (time < 0.3) return `👍 ${t('feedback.fast')}`
+    if (time < 0.4) return `😊 ${t('feedback.average')}`
+    return `🐢 ${t('feedback.slow')}`
   }
 
   if (!winner) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>결과를 불러올 수 없습니다</Text>
+          <Text style={styles.title}>{t('common.noResult')}</Text>
         </View>
       </SafeAreaView>
     )
@@ -197,23 +199,26 @@ export default function QuickTapResultScreen() {
         {/* 헤더 */}
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.header}>
           <Text style={styles.trophy}>⚡</Text>
-          <Text style={styles.title}>게임 결과</Text>
+          <Text style={styles.title}>{t('common.gameResult')}</Text>
           <Text style={styles.subtitle}>QUICK TAP</Text>
         </Animated.View>
 
         {/* 우승자 하이라이트 */}
         <Animated.View entering={FadeInUp.delay(300).springify()}>
           <Animated.View style={[styles.winnerSection, winnerAnimatedStyle]}>
-            <Text style={styles.winnerLabel}>🎉 우승 🎉</Text>
+            <Text style={styles.winnerLabel}>🎉 {t('common.winner')} 🎉</Text>
             <Text style={styles.winnerName}>{winner.name}</Text>
-            <Text style={styles.winnerScore}>{winner.score?.toFixed(3)}초</Text>
+            <Text style={styles.winnerScore}>
+              {winner.score?.toFixed(3)}
+              {t('common.seconds')}
+            </Text>
             <Text style={styles.winnerFeedback}>{getReactionLabel(winner.score)}</Text>
           </Animated.View>
         </Animated.View>
 
         {/* 전체 순위 */}
         <Animated.View entering={FadeInUp.delay(500).duration(400)} style={styles.rankingSection}>
-          <Text style={styles.sectionTitle}>전체 순위</Text>
+          <Text style={styles.sectionTitle}>{t('common.ranking')}</Text>
 
           {rankedPlayers.map((player, index) => (
             <Animated.View
@@ -237,7 +242,10 @@ export default function QuickTapResultScreen() {
               </View>
 
               <View style={styles.timeInfo}>
-                <Text style={styles.reactionTime}>{player.score?.toFixed(3)}초</Text>
+                <Text style={styles.reactionTime}>
+                  {player.score?.toFixed(3)}
+                  {t('common.seconds')}
+                </Text>
               </View>
             </Animated.View>
           ))}
@@ -247,20 +255,20 @@ export default function QuickTapResultScreen() {
       {/* 하단 버튼 */}
       <View style={styles.footer}>
         <Button
-          title="🔄 다시하기"
+          title={`🔄 ${t('common.playAgain')}`}
           onPress={handlePlayAgain}
           variant="primary"
           style={styles.button}
         />
         <View style={styles.buttonRow}>
           <Button
-            title="🏠 홈으로"
+            title={`🏠 ${t('common.home')}`}
             onPress={handleGoHome}
             variant="outline"
             style={styles.halfButton}
           />
           <Button
-            title="📤 공유"
+            title={`📤 ${t('common.share')}`}
             onPress={handleShare}
             variant="secondary"
             style={styles.halfButton}

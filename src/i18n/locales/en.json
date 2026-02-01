@@ -1,0 +1,77 @@
+{
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "exit": "Exit",
+    "start": "START",
+    "stop": "STOP",
+    "next": "Next",
+    "home": "Home",
+    "share": "Share",
+    "playAgain": "Play Again",
+    "viewResult": "View Result",
+    "nextPlayer": "Next Player",
+    "players": "",
+    "seconds": "s",
+    "error": "Error",
+    "target": "Target",
+    "gameResult": "Game Result",
+    "winner": "Winner",
+    "ranking": "Ranking",
+    "remainingPlayers": "Remaining",
+    "shareFailed": "Share Failed",
+    "shareError": "An error occurred while sharing.",
+    "noPlayerInfo": "Unable to load player information",
+    "noResult": "Unable to load results"
+  },
+  "home": {
+    "title": "REFLEX BATTLE",
+    "subtitle": "Challenge your friends!",
+    "timeStopTitle": "TIME STOP",
+    "timeStopDesc": "Stop at the exact target time!",
+    "quickTapTitle": "QUICK TAP",
+    "quickTapDesc": "Tap as fast as you can!"
+  },
+  "exitModal": {
+    "title": "Are you sure you want to exit?"
+  },
+  "setup": {
+    "playerCount": "Players",
+    "playerNames": "Player Names",
+    "targetTime": "Target Time",
+    "startGame": "Start Game",
+    "howToPlay": "How to Play"
+  },
+  "timeStop": {
+    "rules": "1. Timer starts from 0.00 seconds\n2. Press STOP as close to the target as possible!\n3. The player with the smallest error wins!",
+    "playerTurn": "{{name}}'s Turn"
+  },
+  "quickTap": {
+    "rules": "1. Wait while the screen is red\n2. Tap as fast as you can when it turns green!\n3. The fastest reaction time wins!\n⚠️ Tap before green = disqualified!",
+    "playerTurn": "{{name}}'s Turn",
+    "reactionTime": "Reaction Time"
+  },
+  "tapArea": {
+    "ready": "Ready",
+    "tapToStart": "Tap to start",
+    "wait": "Wait...",
+    "waitForGreen": "Wait for green",
+    "tap": "TAP!",
+    "now": "Now!",
+    "tooEarly": "Too early!",
+    "waitForGreenLong": "Wait for the screen to turn green"
+  },
+  "feedback": {
+    "lightning": "Lightning fast!",
+    "veryFast": "Very fast!",
+    "fast": "Fast!",
+    "good": "Good!",
+    "average": "Average",
+    "slow": "A bit slow",
+    "notMeasured": "Not measured"
+  },
+  "share": {
+    "result": "Reflex Battle Result",
+    "challenge": "Try it yourself!"
+  }
+}

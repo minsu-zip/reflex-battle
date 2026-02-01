@@ -2,6 +2,7 @@ import { COLORS } from '@/constants/colors'
 import { AD_CONFIG, AD_UNIT_IDS } from '@/src/constants/adUnitIds'
 import { AdProvider } from '@/src/contexts/AdContext'
 import { SettingsProvider } from '@/src/contexts/SettingsContext'
+import '@/src/i18n' // i18n 초기화
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'

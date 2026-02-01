@@ -1,6 +1,7 @@
 import { COLORS } from '@/constants/colors'
 import { RankedPlayer, getRankEmoji } from '@/src/utils/calculateScore'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, Text, View } from 'react-native'
 
 interface RankingListProps {
@@ -14,6 +15,8 @@ export default function RankingList({
   targetTime,
   gameMode = 'timeStop',
 }: RankingListProps) {
+  const { t } = useTranslation()
+
   const getRankStyle = (rank: number) => {
     switch (rank) {
       case 1:
@@ -61,9 +64,15 @@ export default function RankingList({
             <Text style={[styles.playerName, getRankStyle(player.rank)]}>{player.name}</Text>
             <Text style={styles.playerScore}>
               {gameMode === 'timeStop' ? (
-                <>오차: {player.score?.toFixed(2)}초</>
+                <>
+                  {t('common.error')}: {player.score?.toFixed(2)}
+                  {t('common.seconds')}
+                </>
               ) : (
-                <>{player.score?.toFixed(3)}초</>
+                <>
+                  {player.score?.toFixed(3)}
+                  {t('common.seconds')}
+                </>
               )}
             </Text>
           </View>

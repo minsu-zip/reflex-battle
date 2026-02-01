@@ -1,0 +1,77 @@
+{
+  "common": {
+    "back": "뒤로",
+    "cancel": "취소",
+    "exit": "종료",
+    "start": "START",
+    "stop": "STOP",
+    "next": "다음",
+    "home": "홈으로",
+    "share": "공유",
+    "playAgain": "다시하기",
+    "viewResult": "결과 보기",
+    "nextPlayer": "다음 플레이어",
+    "players": "명",
+    "seconds": "초",
+    "error": "오차",
+    "target": "목표",
+    "gameResult": "게임 결과",
+    "winner": "우승",
+    "ranking": "전체 순위",
+    "remainingPlayers": "남은 플레이어",
+    "shareFailed": "공유 실패",
+    "shareError": "공유하는 중 오류가 발생했습니다.",
+    "noPlayerInfo": "플레이어 정보를 불러올 수 없습니다",
+    "noResult": "결과를 불러올 수 없습니다"
+  },
+  "home": {
+    "title": "REFLEX BATTLE",
+    "subtitle": "친구들과 반응속도 대결!",
+    "timeStopTitle": "TIME STOP",
+    "timeStopDesc": "목표 시간에 정확히 멈춰라!",
+    "quickTapTitle": "QUICK TAP",
+    "quickTapDesc": "색이 바뀌면 최대한 빨리!"
+  },
+  "exitModal": {
+    "title": "정말 나가시겠습니까?"
+  },
+  "setup": {
+    "playerCount": "참가 인원",
+    "playerNames": "플레이어 이름",
+    "targetTime": "목표 시간",
+    "startGame": "게임 시작",
+    "howToPlay": "게임 방법"
+  },
+  "timeStop": {
+    "rules": "1. 시작하면 0.00초부터 타이머가 올라갑니다\n2. 목표 시간에 최대한 가깝게 STOP!\n3. 목표 시간과의 오차가 가장 적은 사람이 승리!",
+    "playerTurn": "{{name}}의 차례"
+  },
+  "quickTap": {
+    "rules": "1. 화면이 빨간색일 때 기다리세요\n2. 초록색으로 바뀌면 최대한 빨리 탭!\n3. 반응 시간이 가장 빠른 사람이 승리!\n⚠️ 초록색 전에 탭하면 실격!",
+    "playerTurn": "{{name}}의 차례",
+    "reactionTime": "반응 시간"
+  },
+  "tapArea": {
+    "ready": "준비",
+    "tapToStart": "화면을 탭해서 시작",
+    "wait": "기다려...",
+    "waitForGreen": "초록색이 될 때까지",
+    "tap": "탭!",
+    "now": "지금!",
+    "tooEarly": "너무 빨랐어요!",
+    "waitForGreenLong": "초록색이 될 때까지 기다리세요"
+  },
+  "feedback": {
+    "lightning": "번개 반응!",
+    "veryFast": "매우 빠름!",
+    "fast": "빠름!",
+    "good": "좋아요!",
+    "average": "평균",
+    "slow": "조금 느려요",
+    "notMeasured": "측정 안됨"
+  },
+  "share": {
+    "result": "Reflex Battle 결과",
+    "challenge": "나도 도전하기!"
+  }
+}

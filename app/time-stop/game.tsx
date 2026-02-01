@@ -6,6 +6,7 @@ import { useTimer } from '@/hooks/useTimer'
 import { Player } from '@/src/types/game'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -13,6 +14,7 @@ type GamePhase = 'ready' | 'playing' | 'stopped'
 
 export default function TimeStopGameScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ players: string; targetTime: string }>()
 
   const initialPlayers: Player[] = params.players ? JSON.parse(params.players) : []
@@ -101,7 +103,7 @@ export default function TimeStopGameScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.playerTurn}>플레이어 정보를 불러올 수 없습니다</Text>
+          <Text style={styles.playerTurn}>{t('common.noPlayerInfo')}</Text>
         </View>
       </SafeAreaView>
     )
@@ -112,7 +114,7 @@ export default function TimeStopGameScreen() {
       {/* 상단 헤더 */}
       <View style={styles.topHeader}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          <Text style={styles.backButtonText}>← 뒤로</Text>
+          <Text style={styles.backButtonText}>← {t('common.back')}</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>🎯 TIME STOP</Text>
         <View style={styles.headerSpacer} />
@@ -121,8 +123,13 @@ export default function TimeStopGameScreen() {
       <View style={styles.content}>
         {/* 현재 플레이어 정보 */}
         <View style={styles.header}>
-          <Text style={styles.playerTurn}>{currentPlayer.name}의 차례</Text>
-          <Text style={styles.targetTime}>목표: {targetTime.toFixed(1)}초</Text>
+          <Text style={styles.playerTurn}>
+            {t('timeStop.playerTurn', { name: currentPlayer.name })}
+          </Text>
+          <Text style={styles.targetTime}>
+            {t('common.target')}: {targetTime.toFixed(1)}
+            {t('common.seconds')}
+          </Text>
         </View>
 
         {/* 타이머 */}
@@ -145,7 +152,8 @@ export default function TimeStopGameScreen() {
                 {calculateDifference()}
               </Text>
               <Text style={styles.differenceLabel}>
-                오차: {Math.abs(stoppedTime - targetTime).toFixed(2)}초
+                {t('common.error')}: {Math.abs(stoppedTime - targetTime).toFixed(2)}
+                {t('common.seconds')}
               </Text>
             </View>
           )}
@@ -153,13 +161,13 @@ export default function TimeStopGameScreen() {
 
         {/* 버튼 영역 */}
         <View style={styles.buttonContainer}>
-          {gamePhase === 'ready' && <StopButton onPress={handleStart} label="START" />}
+          {gamePhase === 'ready' && <StopButton onPress={handleStart} label={t('common.start')} />}
 
-          {gamePhase === 'playing' && <StopButton onPress={handleStop} label="STOP" />}
+          {gamePhase === 'playing' && <StopButton onPress={handleStop} label={t('common.stop')} />}
 
           {gamePhase === 'stopped' && (
             <Button
-              title={isLastPlayer ? '🏆 결과 보기' : '다음 플레이어 →'}
+              title={isLastPlayer ? `🏆 ${t('common.viewResult')}` : `${t('common.nextPlayer')} →`}
               onPress={handleNext}
               size="large"
               style={styles.nextButton}
@@ -169,7 +177,10 @@ export default function TimeStopGameScreen() {
 
         {/* 하단 정보 */}
         <View style={styles.footer}>
-          <Text style={styles.remainingText}>남은 플레이어: {remainingPlayers}명</Text>
+          <Text style={styles.remainingText}>
+            {t('common.remainingPlayers')}: {remainingPlayers}
+            {t('common.players')}
+          </Text>
           <View style={styles.progressDots}>
             {players.map((_, index) => (
               <View

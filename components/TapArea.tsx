@@ -2,6 +2,7 @@ import { COLORS } from '@/constants/colors'
 import { useSettings } from '@/src/contexts/SettingsContext'
 import { lightHaptic, successHaptic, warningHaptic } from '@/src/utils/haptics'
 import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 type TapAreaState = 'waiting' | 'ready' | 'go' | 'tooEarly' | 'result'
@@ -15,6 +16,7 @@ interface TapAreaProps {
 
 export default function TapArea({ state, onTap, reactionTime, disabled = false }: TapAreaProps) {
   const { settings } = useSettings()
+  const { t } = useTranslation()
 
   const handleTap = useCallback(() => {
     switch (state) {
@@ -53,17 +55,17 @@ export default function TapArea({ state, onTap, reactionTime, disabled = false }
   const getMessage = () => {
     switch (state) {
       case 'waiting':
-        return { main: '준비', sub: '화면을 탭해서 시작' }
+        return { main: t('tapArea.ready'), sub: t('tapArea.tapToStart') }
       case 'ready':
-        return { main: '기다려...', sub: '초록색이 될 때까지' }
+        return { main: t('tapArea.wait'), sub: t('tapArea.waitForGreen') }
       case 'go':
-        return { main: '탭!', sub: '지금!' }
+        return { main: t('tapArea.tap'), sub: t('tapArea.now') }
       case 'tooEarly':
-        return { main: '너무 빨랐어요! 😅', sub: '초록색이 될 때까지 기다리세요' }
+        return { main: `${t('tapArea.tooEarly')} 😅`, sub: t('tapArea.waitForGreenLong') }
       case 'result':
         return {
-          main: `${reactionTime?.toFixed(3)}초`,
-          sub: '반응 시간',
+          main: `${reactionTime?.toFixed(3)}${t('common.seconds')}`,
+          sub: t('quickTap.reactionTime'),
         }
       default:
         return { main: '', sub: '' }

@@ -1,0 +1,77 @@
+{
+  "common": {
+    "back": "戻る",
+    "cancel": "キャンセル",
+    "exit": "終了",
+    "start": "START",
+    "stop": "STOP",
+    "next": "次へ",
+    "home": "ホーム",
+    "share": "共有",
+    "playAgain": "もう一度",
+    "viewResult": "結果を見る",
+    "nextPlayer": "次のプレイヤー",
+    "players": "人",
+    "seconds": "秒",
+    "error": "誤差",
+    "target": "目標",
+    "gameResult": "ゲーム結果",
+    "winner": "優勝",
+    "ranking": "ランキング",
+    "remainingPlayers": "残り",
+    "shareFailed": "共有に失敗",
+    "shareError": "共有中にエラーが発生しました。",
+    "noPlayerInfo": "プレイヤー情報を読み込めません",
+    "noResult": "結果を読み込めません"
+  },
+  "home": {
+    "title": "REFLEX BATTLE",
+    "subtitle": "友達と反応速度対決！",
+    "timeStopTitle": "TIME STOP",
+    "timeStopDesc": "目標時間ぴったりに止めろ！",
+    "quickTapTitle": "QUICK TAP",
+    "quickTapDesc": "色が変わったら素早くタップ！"
+  },
+  "exitModal": {
+    "title": "本当に終了しますか？"
+  },
+  "setup": {
+    "playerCount": "参加人数",
+    "playerNames": "プレイヤー名",
+    "targetTime": "目標時間",
+    "startGame": "ゲーム開始",
+    "howToPlay": "遊び方"
+  },
+  "timeStop": {
+    "rules": "1. スタートすると0.00秒からタイマーが上がります\n2. 目標時間にできるだけ近くSTOP！\n3. 目標時間との誤差が最も小さい人が勝ち！",
+    "playerTurn": "{{name}}の番"
+  },
+  "quickTap": {
+    "rules": "1. 画面が赤い時は待ってください\n2. 緑に変わったら素早くタップ！\n3. 反応時間が最も速い人が勝ち！\n⚠️ 緑になる前にタップすると失格！",
+    "playerTurn": "{{name}}の番",
+    "reactionTime": "反応時間"
+  },
+  "tapArea": {
+    "ready": "準備",
+    "tapToStart": "タップしてスタート",
+    "wait": "待って...",
+    "waitForGreen": "緑になるまで",
+    "tap": "タップ！",
+    "now": "今！",
+    "tooEarly": "早すぎ！",
+    "waitForGreenLong": "緑になるまで待ってください"
+  },
+  "feedback": {
+    "lightning": "電光石火！",
+    "veryFast": "超速い！",
+    "fast": "速い！",
+    "good": "いいね！",
+    "average": "普通",
+    "slow": "ちょっと遅い",
+    "notMeasured": "測定なし"
+  },
+  "share": {
+    "result": "Reflex Battle 結果",
+    "challenge": "君も挑戦！"
+  }
+}

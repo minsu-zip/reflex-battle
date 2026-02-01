@@ -5,6 +5,7 @@ import { CONFIG } from '@/constants/config'
 import { Player } from '@/src/types/game'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -12,6 +13,7 @@ type GamePhase = 'waiting' | 'ready' | 'go' | 'tooEarly' | 'result'
 
 export default function QuickTapGameScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ players: string }>()
 
   const initialPlayers: Player[] = params.players ? JSON.parse(params.players) : []
@@ -125,18 +127,18 @@ export default function QuickTapGameScreen() {
   // 반응 시간 평가
   const getReactionFeedback = () => {
     if (reactionTime === null) return ''
-    if (reactionTime < 0.2) return '⚡ 번개 반응!'
-    if (reactionTime < 0.25) return '🔥 매우 빠름!'
-    if (reactionTime < 0.3) return '👍 좋아요!'
-    if (reactionTime < 0.4) return '😊 평균'
-    return '🐢 조금 느려요'
+    if (reactionTime < 0.2) return `⚡ ${t('feedback.lightning')}`
+    if (reactionTime < 0.25) return `🔥 ${t('feedback.veryFast')}`
+    if (reactionTime < 0.3) return `👍 ${t('feedback.good')}`
+    if (reactionTime < 0.4) return `😊 ${t('feedback.average')}`
+    return `🐢 ${t('feedback.slow')}`
   }
 
   if (!currentPlayer) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.playerTurn}>플레이어 정보를 불러올 수 없습니다</Text>
+          <Text style={styles.playerTurn}>{t('common.noPlayerInfo')}</Text>
         </View>
       </SafeAreaView>
     )
@@ -147,7 +149,7 @@ export default function QuickTapGameScreen() {
       {/* 상단 헤더 */}
       <View style={styles.topHeader}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          <Text style={styles.backButtonText}>← 뒤로</Text>
+          <Text style={styles.backButtonText}>← {t('common.back')}</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>⚡ QUICK TAP</Text>
         <View style={styles.headerSpacer} />
@@ -155,7 +157,9 @@ export default function QuickTapGameScreen() {
 
       {/* 플레이어 정보 */}
       <View style={styles.header}>
-        <Text style={styles.playerTurn}>{currentPlayer.name}의 차례</Text>
+        <Text style={styles.playerTurn}>
+          {t('quickTap.playerTurn', { name: currentPlayer.name })}
+        </Text>
         <View style={styles.progressDots}>
           {players.map((_, index) => (
             <View
@@ -183,7 +187,7 @@ export default function QuickTapGameScreen() {
         <View style={styles.resultSection}>
           <Text style={styles.feedback}>{getReactionFeedback()}</Text>
           <Button
-            title={isLastPlayer ? '🏆 결과 보기' : '다음 플레이어 →'}
+            title={isLastPlayer ? `🏆 ${t('common.viewResult')}` : `${t('common.nextPlayer')} →`}
             onPress={handleNext}
             size="large"
             style={styles.nextButton}
@@ -193,7 +197,10 @@ export default function QuickTapGameScreen() {
 
       {/* 하단 정보 */}
       <View style={styles.footer}>
-        <Text style={styles.remainingText}>남은 플레이어: {remainingPlayers}명</Text>
+        <Text style={styles.remainingText}>
+          {t('common.remainingPlayers')}: {remainingPlayers}
+          {t('common.players')}
+        </Text>
       </View>
     </SafeAreaView>
   )

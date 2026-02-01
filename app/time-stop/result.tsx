@@ -9,6 +9,7 @@ import { generateShareText, rankPlayers } from '@/src/utils/calculateScore'
 import { successHaptic } from '@/src/utils/haptics'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Alert, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
 import Animated, {
   FadeInDown,
@@ -24,6 +25,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function TimeStopResultScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ players: string; targetTime: string }>()
   const { settings } = useSettings()
 
@@ -119,7 +121,7 @@ export default function TimeStopResultScreen() {
         message: shareText,
       })
     } catch (error) {
-      Alert.alert('공유 실패', '공유하는 중 오류가 발생했습니다.')
+      Alert.alert(t('common.shareFailed'), t('common.shareError'))
     }
   }
 
@@ -127,7 +129,7 @@ export default function TimeStopResultScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>결과를 불러올 수 없습니다</Text>
+          <Text style={styles.title}>{t('common.noResult')}</Text>
         </View>
       </SafeAreaView>
     )
@@ -143,22 +145,28 @@ export default function TimeStopResultScreen() {
         {/* 헤더 */}
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.header}>
           <Text style={styles.trophy}>🏆</Text>
-          <Text style={styles.title}>게임 결과</Text>
-          <Text style={styles.targetTime}>목표 시간: {targetTime.toFixed(1)}초</Text>
+          <Text style={styles.title}>{t('common.gameResult')}</Text>
+          <Text style={styles.targetTime}>
+            {t('setup.targetTime')}: {targetTime.toFixed(1)}
+            {t('common.seconds')}
+          </Text>
         </Animated.View>
 
         {/* 우승자 하이라이트 */}
         <Animated.View entering={FadeInUp.delay(300).springify()}>
           <Animated.View style={[styles.winnerSection, winnerAnimatedStyle]}>
-            <Text style={styles.winnerLabel}>🎉 우승 🎉</Text>
+            <Text style={styles.winnerLabel}>🎉 {t('common.winner')} 🎉</Text>
             <Text style={styles.winnerName}>{winner.name}</Text>
-            <Text style={styles.winnerScore}>오차 {winner.score?.toFixed(2)}초</Text>
+            <Text style={styles.winnerScore}>
+              {t('common.error')} {winner.score?.toFixed(2)}
+              {t('common.seconds')}
+            </Text>
           </Animated.View>
         </Animated.View>
 
         {/* 전체 순위 */}
         <Animated.View entering={FadeInUp.delay(500).duration(400)} style={styles.rankingSection}>
-          <Text style={styles.sectionTitle}>전체 순위</Text>
+          <Text style={styles.sectionTitle}>{t('common.ranking')}</Text>
           <RankingList players={rankedPlayers} targetTime={targetTime} gameMode="timeStop" />
         </Animated.View>
       </ScrollView>
@@ -166,20 +174,20 @@ export default function TimeStopResultScreen() {
       {/* 하단 버튼 */}
       <View style={styles.footer}>
         <Button
-          title="🔄 다시하기"
+          title={`🔄 ${t('common.playAgain')}`}
           onPress={handlePlayAgain}
           variant="primary"
           style={styles.button}
         />
         <View style={styles.buttonRow}>
           <Button
-            title="🏠 홈으로"
+            title={`🏠 ${t('common.home')}`}
             onPress={handleGoHome}
             variant="outline"
             style={styles.halfButton}
           />
           <Button
-            title="📤 공유"
+            title={`📤 ${t('common.share')}`}
             onPress={handleShare}
             variant="secondary"
             style={styles.halfButton}

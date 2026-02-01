@@ -7,6 +7,7 @@ import { CONFIG } from '@/constants/config'
 import { Player } from '@/src/types/game'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function TimeStopSetupScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const [playerCount, setPlayerCount] = useState(2)
   const [playerNames, setPlayerNames] = useState<string[]>(Array(CONFIG.MAX_PLAYERS).fill(''))
   const [targetTime, setTargetTime] = useState(CONFIG.DEFAULT_TARGET_TIME)
@@ -79,7 +81,7 @@ export default function TimeStopSetupScreen() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Text style={styles.backButtonText}>← 뒤로</Text>
+            <Text style={styles.backButtonText}>← {t('common.back')}</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>🎯 TIME STOP</Text>
           <View style={styles.headerSpacer} />
@@ -92,18 +94,18 @@ export default function TimeStopSetupScreen() {
         >
           {/* 참가 인원 설정 */}
           <NumberStepper
-            label="참가 인원"
+            label={t('setup.playerCount')}
             value={playerCount}
             onIncrease={handlePlayerCountIncrease}
             onDecrease={handlePlayerCountDecrease}
             min={CONFIG.MIN_PLAYERS}
             max={CONFIG.MAX_PLAYERS}
-            unit="명"
+            unit={t('common.players')}
           />
 
           {/* 플레이어 이름 입력 */}
           <View style={styles.playerInputs}>
-            <Text style={styles.sectionLabel}>플레이어 이름</Text>
+            <Text style={styles.sectionLabel}>{t('setup.playerNames')}</Text>
             {Array.from({ length: playerCount }, (_, i) => (
               <PlayerInput
                 key={i}
@@ -116,31 +118,27 @@ export default function TimeStopSetupScreen() {
 
           {/* 목표 시간 설정 */}
           <NumberStepper
-            label="목표 시간"
+            label={t('setup.targetTime')}
             value={targetTime}
             onIncrease={handleTargetTimeIncrease}
             onDecrease={handleTargetTimeDecrease}
             min={CONFIG.MIN_TARGET_TIME}
             max={CONFIG.MAX_TARGET_TIME}
-            unit="초"
+            unit={t('common.seconds')}
             formatValue={(v) => v.toFixed(1)}
           />
 
           {/* 게임 규칙 설명 */}
           <View style={styles.rulesContainer}>
-            <Text style={styles.rulesTitle}>🎮 게임 방법</Text>
-            <Text style={styles.rulesText}>
-              1. 시작하면 0.00초부터 타이머가 올라갑니다{'\n'}
-              2. 목표 시간에 최대한 가깝게 STOP!{'\n'}
-              3. 목표 시간과의 오차가 가장 적은 사람이 승리!
-            </Text>
+            <Text style={styles.rulesTitle}>🎮 {t('setup.howToPlay')}</Text>
+            <Text style={styles.rulesText}>{t('timeStop.rules')}</Text>
           </View>
         </ScrollView>
 
         {/* 게임 시작 버튼 */}
         <View style={styles.footer}>
           <Button
-            title="🎮 게임 시작"
+            title={`🎮 ${t('setup.startGame')}`}
             onPress={handleStartGame}
             size="large"
             style={styles.startButton}

@@ -7,6 +7,7 @@ import { CONFIG } from '@/constants/config'
 import { Player } from '@/src/types/game'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function QuickTapSetupScreen() {
   const router = useRouter()
+  const { t } = useTranslation()
   const [playerCount, setPlayerCount] = useState(2)
   const [playerNames, setPlayerNames] = useState<string[]>(Array(CONFIG.MAX_PLAYERS).fill(''))
 
@@ -65,7 +67,7 @@ export default function QuickTapSetupScreen() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Text style={styles.backButtonText}>← 뒤로</Text>
+            <Text style={styles.backButtonText}>← {t('common.back')}</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>⚡ QUICK TAP</Text>
           <View style={styles.headerSpacer} />
@@ -78,18 +80,18 @@ export default function QuickTapSetupScreen() {
         >
           {/* 참가 인원 설정 */}
           <NumberStepper
-            label="참가 인원"
+            label={t('setup.playerCount')}
             value={playerCount}
             onIncrease={handlePlayerCountIncrease}
             onDecrease={handlePlayerCountDecrease}
             min={CONFIG.MIN_PLAYERS}
             max={CONFIG.MAX_PLAYERS}
-            unit="명"
+            unit={t('common.players')}
           />
 
           {/* 플레이어 이름 입력 */}
           <View style={styles.playerInputs}>
-            <Text style={styles.sectionLabel}>플레이어 이름</Text>
+            <Text style={styles.sectionLabel}>{t('setup.playerNames')}</Text>
             {Array.from({ length: playerCount }, (_, i) => (
               <PlayerInput
                 key={i}
@@ -102,20 +104,15 @@ export default function QuickTapSetupScreen() {
 
           {/* 게임 규칙 설명 */}
           <View style={styles.rulesContainer}>
-            <Text style={styles.rulesTitle}>🎮 게임 방법</Text>
-            <Text style={styles.rulesText}>
-              1. 화면이 빨간색일 때 기다리세요{'\n'}
-              2. 초록색으로 바뀌면 최대한 빨리 탭!{'\n'}
-              3. 반응 시간이 가장 빠른 사람이 승리!{'\n'}
-              ⚠️ 초록색 전에 탭하면 실격!
-            </Text>
+            <Text style={styles.rulesTitle}>🎮 {t('setup.howToPlay')}</Text>
+            <Text style={styles.rulesText}>{t('quickTap.rules')}</Text>
           </View>
         </ScrollView>
 
         {/* 게임 시작 버튼 */}
         <View style={styles.footer}>
           <Button
-            title="🎮 게임 시작"
+            title={`🎮 ${t('setup.startGame')}`}
             onPress={handleStartGame}
             size="large"
             style={styles.startButton}

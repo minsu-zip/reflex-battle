@@ -1,0 +1,77 @@
+{
+  "common": {
+    "back": "返回",
+    "cancel": "取消",
+    "exit": "退出",
+    "start": "START",
+    "stop": "STOP",
+    "next": "下一步",
+    "home": "首页",
+    "share": "分享",
+    "playAgain": "再来一次",
+    "viewResult": "查看结果",
+    "nextPlayer": "下一位玩家",
+    "players": "人",
+    "seconds": "秒",
+    "error": "误差",
+    "target": "目标",
+    "gameResult": "游戏结果",
+    "winner": "冠军",
+    "ranking": "排行榜",
+    "remainingPlayers": "剩余玩家",
+    "shareFailed": "分享失败",
+    "shareError": "分享时发生错误。",
+    "noPlayerInfo": "无法加载玩家信息",
+    "noResult": "无法加载结果"
+  },
+  "home": {
+    "title": "REFLEX BATTLE",
+    "subtitle": "和朋友比拼反应速度！",
+    "timeStopTitle": "TIME STOP",
+    "timeStopDesc": "在目标时间精准停止！",
+    "quickTapTitle": "QUICK TAP",
+    "quickTapDesc": "颜色变化时快速点击！"
+  },
+  "exitModal": {
+    "title": "确定要退出吗？"
+  },
+  "setup": {
+    "playerCount": "参与人数",
+    "playerNames": "玩家名称",
+    "targetTime": "目标时间",
+    "startGame": "开始游戏",
+    "howToPlay": "游戏规则"
+  },
+  "timeStop": {
+    "rules": "1. 开始后计时器从0.00秒开始\n2. 尽可能接近目标时间按STOP！\n3. 与目标时间误差最小的人获胜！",
+    "playerTurn": "{{name}}的回合"
+  },
+  "quickTap": {
+    "rules": "1. 屏幕红色时请等待\n2. 变绿时尽快点击！\n3. 反应时间最快的人获胜！\n⚠️ 绿色之前点击将被淘汰！",
+    "playerTurn": "{{name}}的回合",
+    "reactionTime": "反应时间"
+  },
+  "tapArea": {
+    "ready": "准备",
+    "tapToStart": "点击开始",
+    "wait": "等待...",
+    "waitForGreen": "等待变绿",
+    "tap": "点击！",
+    "now": "现在！",
+    "tooEarly": "太早了！",
+    "waitForGreenLong": "请等待屏幕变绿"
+  },
+  "feedback": {
+    "lightning": "闪电反应！",
+    "veryFast": "非常快！",
+    "fast": "很快！",
+    "good": "不错！",
+    "average": "一般",
+    "slow": "有点慢",
+    "notMeasured": "未测量"
+  },
+  "share": {
+    "result": "Reflex Battle 结果",
+    "challenge": "一起来挑战！"
+  }
+}
