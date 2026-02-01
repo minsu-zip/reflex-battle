@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourname.reflexbattle"
+      "bundleIdentifier": "com.minsu.reflexbattle"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
         "monochromeImage": "./assets/images/splash-icon.png",
         "backgroundColor": "#7915d3"
       },
-      "package": "com.yourname.reflexbattle",
+      "package": "com.minsu.reflexbattle",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
@@ -45,6 +45,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1de046d2-1ebb-452c-ad69-c2f0f25029ac"
+      }
     }
   }
 }
