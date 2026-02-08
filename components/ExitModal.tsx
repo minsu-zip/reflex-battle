@@ -1,7 +1,9 @@
 import { COLORS } from '@/constants/colors'
-import React from 'react'
+import { AD_UNIT_IDS } from '@/src/constants/adUnitIds'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { NativeAd } from 'react-native-google-mobile-ads'
 import NativeAdView from './NativeAdView'
 
 interface ExitModalProps {
@@ -12,6 +14,42 @@ interface ExitModalProps {
 
 export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps) {
   const { t } = useTranslation()
+  const [nativeAd, setNativeAd] = useState<NativeAd | null>(null)
+  const [adLoading, setAdLoading] = useState(true)
+  const adRef = useRef<NativeAd | null>(null)
+
+  // 컴포넌트 마운트 시 바로 광고 프리로드
+  useEffect(() => {
+    let isMounted = true
+
+    const loadAd = async () => {
+      try {
+        const ad = await NativeAd.createForAdRequest(AD_UNIT_IDS.NATIVE, {
+          requestNonPersonalizedAdsOnly: true,
+        })
+        if (isMounted) {
+          adRef.current = ad
+          setNativeAd(ad)
+          setAdLoading(false)
+        } else {
+          ad.destroy()
+        }
+      } catch {
+        if (isMounted) {
+          setAdLoading(false)
+        }
+      }
+    }
+
+    loadAd()
+
+    return () => {
+      isMounted = false
+      if (adRef.current) {
+        adRef.current.destroy()
+      }
+    }
+  }, [])
 
   return (
     <Modal
@@ -26,9 +64,9 @@ export default function ExitModal({ visible, onCancel, onExit }: ExitModalProps)
           {/* 제목 */}
           <Text style={styles.title}>{t('exitModal.title')}</Text>
 
-          {/* 네이티브 광고 영역 */}
+          {/* 네이티브 광고 영역 (프리로드됨) */}
           <View style={styles.adContainer}>
-            <NativeAdView />
+            <NativeAdView preloadedAd={nativeAd} isLoading={adLoading} />
           </View>
 
           {/* 버튼 영역 */}

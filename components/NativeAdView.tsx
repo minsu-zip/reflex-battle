@@ -1,6 +1,5 @@
 import { COLORS } from '@/constants/colors'
-import { AD_UNIT_IDS } from '@/src/constants/adUnitIds'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import {
   NativeAdView as GADNativeAdView,
@@ -11,55 +10,15 @@ import {
 } from 'react-native-google-mobile-ads'
 
 interface NativeAdViewProps {
-  onAdLoaded?: () => void
-  onAdFailedToLoad?: (error: Error) => void
+  preloadedAd?: NativeAd | null
+  isLoading?: boolean
 }
 
-export default function NativeAdViewComponent({ onAdLoaded, onAdFailedToLoad }: NativeAdViewProps) {
-  const [nativeAd, setNativeAd] = useState<NativeAd | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+export default function NativeAdViewComponent({ preloadedAd, isLoading }: NativeAdViewProps) {
+  const nativeAd = preloadedAd ?? null
+  const loading = isLoading ?? false
 
-  useEffect(() => {
-    let isMounted = true
-    let adInstance: NativeAd | null = null
-
-    const loadAd = async () => {
-      try {
-        const ad = await NativeAd.createForAdRequest(AD_UNIT_IDS.NATIVE, {
-          requestNonPersonalizedAdsOnly: true,
-        })
-
-        if (isMounted) {
-          adInstance = ad
-          setNativeAd(ad)
-          setLoading(false)
-          console.log('Native ad loaded successfully')
-          onAdLoaded?.()
-        } else {
-          ad.destroy()
-        }
-      } catch (err) {
-        if (isMounted) {
-          console.error('Native ad failed to load:', err)
-          setLoading(false)
-          setError(true)
-          onAdFailedToLoad?.(err as Error)
-        }
-      }
-    }
-
-    loadAd()
-
-    return () => {
-      isMounted = false
-      if (adInstance) {
-        adInstance.destroy()
-      }
-    }
-  }, [onAdLoaded, onAdFailedToLoad])
-
-  if (error || (!loading && !nativeAd)) {
+  if (!loading && !nativeAd) {
     return null
   }
 
