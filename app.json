@@ -2,7 +2,7 @@
   "expo": {
     "name": "Reflex Battle",
     "slug": "reflex-battle",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "reflexbattle",
@@ -26,7 +26,8 @@
       },
       "package": "com.minsu.reflexbattle",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "enableProguardInReleaseBuilds": true
     },
     "web": {
       "output": "static",
