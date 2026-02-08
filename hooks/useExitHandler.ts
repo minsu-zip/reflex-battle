@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
-import { BackHandler, Platform } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { AppState, BackHandler, Platform } from 'react-native'
 
 /**
  * Android 뒤로가기 버튼 핸들러 훅
@@ -7,6 +8,8 @@ import { BackHandler, Platform } from 'react-native'
  */
 export function useExitHandler() {
   const [exitModalVisible, setExitModalVisible] = useState(false)
+  const isFocused = useIsFocused()
+  const appState = useRef(AppState.currentState)
 
   const showExitModal = useCallback(() => {
     setExitModalVisible(true)
@@ -17,29 +20,42 @@ export function useExitHandler() {
   }, [])
 
   const exitApp = useCallback(() => {
-    BackHandler.exitApp()
+    setExitModalVisible(false)
+    setTimeout(() => {
+      BackHandler.exitApp()
+    }, 100)
+  }, [])
+
+  // 앱이 백그라운드에서 포그라운드로 돌아올 때 모달 초기화
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        setExitModalVisible(false)
+      }
+      appState.current = nextAppState
+    })
+
+    return () => subscription.remove()
   }, [])
 
   useEffect(() => {
-    // Android에서만 동작
-    if (Platform.OS !== 'android') {
+    // Android에서만, 홈 화면이 포커스된 경우에만 동작
+    if (Platform.OS !== 'android' || !isFocused) {
       return
     }
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      // 모달이 이미 열려있으면 닫기
       if (exitModalVisible) {
         hideExitModal()
         return true
       }
 
-      // 모달 표시
       showExitModal()
-      return true // 기본 뒤로가기 동작 막기
+      return true
     })
 
     return () => backHandler.remove()
-  }, [exitModalVisible, hideExitModal, showExitModal])
+  }, [exitModalVisible, isFocused, hideExitModal, showExitModal])
 
   return {
     exitModalVisible,
