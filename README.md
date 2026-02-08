@@ -1,50 +1,112 @@
-# Welcome to your Expo app 👋
+# Reflex Battle
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A multiplayer reaction time game built with React Native and Expo. Challenge your friends and prove who has the fastest reflexes — all on one device!
 
-## Get started
+![Feature Graphic](assets/images/screenshot/graphic.png)
 
-1. Install dependencies
+## Screenshots
 
-   ```bash
-   npm install
-   ```
+<div style="overflow-x: auto; white-space: nowrap;">
+  <img src="assets/images/screenshot/01_home.png" width="200" />
+  <img src="assets/images/screenshot/02_setup.png" width="200" />
+  <img src="assets/images/screenshot/03_timestop_game.png" width="200" />
+  <img src="assets/images/screenshot/04_timestop_result.png" width="200" />
+  <img src="assets/images/screenshot/05_quicktap_game.png" width="200" />
+  <img src="assets/images/screenshot/06_quicktap_result.png" width="200" />
+</div>
 
-2. Start the app
+## Game Modes
 
-   ```bash
-   npx expo start
-   ```
+### Time Stop
 
-In the output, you'll find options to open the app in a
+Set a target time and try to stop the timer as close to it as possible. The player with the best timing wins.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Quick Tap
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+When the screen turns green, tap as fast as you can. But be careful — tap too early and you'll get a penalty!
 
-## Get a fresh project
+## Features
 
-When you're ready, run:
+- 2–8 players on a single device
+- Two game modes with distinct challenges
+- Dark theme UI with smooth animations
+- Haptic feedback for immersive experience
+- Offline play — no internet required
+- Multilingual support (Korean, English, Japanese, Chinese, Russian)
 
-```bash
-npm run reset-project
+## Tech Stack
+
+| Category   | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Framework  | React Native + Expo                         |
+| Language   | TypeScript                                  |
+| Navigation | Expo Router (file-based)                    |
+| Ads        | Google AdMob (Banner, Interstitial, Native) |
+| Animation  | React Native Reanimated                     |
+| Haptics    | expo-haptics                                |
+| i18n       | react-i18next                               |
+
+## Project Structure
+
+```
+app/
+  _layout.tsx          # Root layout (splash, ad init)
+  index.tsx            # Home screen
+  time-stop/
+    setup.tsx          # Player setup
+    game.tsx           # Time Stop game
+    result.tsx         # Results & rankings
+  quick-tap/
+    setup.tsx          # Player setup
+    game.tsx           # Quick Tap game
+    result.tsx         # Results & rankings
+components/            # Reusable UI components
+hooks/                 # Custom hooks (timer, exit handler, etc.)
+src/
+  constants/           # Ad unit IDs, config
+  contexts/            # Ad, Settings context providers
+  i18n/                # Translations (ko, en, ja, zh, ru)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting Started
 
-## Learn more
+### Prerequisites
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js 18+
+- Android Studio (for Android emulator) or Xcode (for iOS simulator)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Installation
 
-## Join the community
+```bash
+npm install
+```
 
-Join our community of developers creating universal apps.
+### Development
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Start Expo dev server
+npx expo start
+
+# Run on Android
+npm run android
+
+# Run on iOS
+npm run ios
+```
+
+### Production Build
+
+```bash
+# Install EAS CLI
+npm install -g eas-cli
+
+# Build for Android (AAB for Play Store)
+eas build --profile production --platform android
+
+# Build for iOS
+eas build --profile production --platform ios
+```
+
+## License
+
+All rights reserved.
