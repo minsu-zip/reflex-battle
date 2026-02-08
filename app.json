@@ -24,6 +24,7 @@
         "monochromeImage": "./assets/images/splash-icon.png",
         "backgroundColor": "#7915d3"
       },
+      "versionCode": 2,
       "package": "com.minsu.reflexbattle",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
